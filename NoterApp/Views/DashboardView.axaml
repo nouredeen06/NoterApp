@@ -1,0 +1,130 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sty="using:Avalonia.Themes.Fluent"
+             mc:Ignorable="d" d:DesignWidth="1013" d:DesignHeight="882"
+             x:Class="NoterApp.Views.DashboardView"
+             xmlns:vm="using:NoterApp.ViewModels"
+             xmlns:models="using:NoterApp.Models"
+             x:DataType="vm:DashboardViewModel"
+             Background="#121212">
+    <UserControl.Styles>
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#121212" />
+        </Style>
+        <Style Selector="ComboBox:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#191919" />
+        </Style>
+        <Style Selector="ComboBox:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#191919" />
+        </Style>
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Background" Value="#191919" />
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#282828" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
+        </Style>
+        <Style Selector="TextBox:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#282828" />
+            <Setter Property="Foreground" Value="#8b8b8b" />
+        </Style>
+        <Style Selector="TextBox:empty">
+            <Setter Property="Background" Value="#282828" />
+            <Setter Property="Foreground" Value="#8b8b8b" />
+        </Style>
+        <Style Selector="TextBox:focus /template/ ContentPresenter">
+            <Setter Property="Background" Value="#282828" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
+        </Style>
+
+
+    </UserControl.Styles>
+    <Grid RowDefinitions="Auto,*">
+        <StackPanel Grid.Row="0">
+            <ComboBox Width="172" Height="45" Foreground="White" SelectedIndex="0" FontSize="19.5" Background="#121212"
+                      BorderBrush="#121212" Margin="17.5 22.5 0 15" CornerRadius="7.5">
+                <ComboBoxItem>test 1</ComboBoxItem>
+            </ComboBox>
+            <Button Command="{Binding createnoteCommand}"></Button>
+            <TextBox Height="45" CornerRadius="22.5" Background="#282828" Watermark="Search..." Margin="11 0"
+                     HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="15"
+                     Padding="19.5 0" BorderThickness="0" />
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" Height="60"
+                          VerticalContentAlignment="Top">
+                <ItemsControl ItemsSource="{Binding TagsList}" Margin=" 13 7.5">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="7.5" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="models:Tags">
+                            <Button Background="#3F3F3F" Height="30" CornerRadius="15">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="12" Height="12" Background="{Binding ColorHex}" CornerRadius="6" />
+                                    <TextBlock Foreground="White" Text="{Binding Name}" FontSize="12"
+                                               VerticalAlignment="Center" Margin="6 0" />
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                      HorizontalContentAlignment="Right">
+            <ItemsControl ItemsSource="{Binding NotePreviewList}" Margin="13 20">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel ItemWidth="232" ItemHeight="229" ItemSpacing="10" LineSpacing="10" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="models:NotePreview">
+                        <Button Width="232" Height="229" Padding="0" Background="#282828" CornerRadius="7.5">
+                            <StackPanel>
+                                <TextBlock Text="{Binding title}" FontSize="15" FontWeight="SemiBold"
+                                           Margin="7.5 7.5 9 3.5" />
+                                <TextBlock Text="{Binding body}" FontSize="10.5" FontWeight="Regular" Height="125"
+                                           Margin="7.5 0" TextWrapping="Wrap">
+                                </TextBlock>
+                                <Border MinWidth="45" Height="20" Background="{Binding tagColor}"
+                                        HorizontalAlignment="Left"
+                                        CornerRadius="10"
+                                        Margin="7.5 6.5">
+                                    <TextBlock Text="{Binding tag}" FontSize="10" HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontWeight="SemiBold" LetterSpacing="0.2" Margin="7.5 0" />
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Width="101" Height="30" CornerRadius="3.75" Background="#282828"
+                                            BorderThickness="0.75"
+                                            BorderBrush="#575757" Margin="7.5 0 83 9" Padding="0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Svg Path="/Assets/Icons/trash-2.svg"
+                                                 Css="path, circle { stroke: #7A6482; }"
+                                                 VerticalAlignment="Center" Height="16" Margin="5.25 4.5 2.4 6" />
+                                            <TextBlock Text="Move to Trash" FontSize="9.75" LetterSpacing="0.2"
+                                                       Foreground="#C7C7C7"
+                                                       VerticalAlignment="Center">
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Width="30" Height="30" CornerRadius="3.75" Background="#282828"
+                                            BorderThickness="0.75"
+                                            BorderBrush="#575757" Margin="0 0 0 9" Padding="0"
+                                            HorizontalAlignment="Right">
+                                        <Svg Path="/Assets/Icons/pin.svg" Height="16"
+                                             Css="path, circle { stroke: #7A6482; }" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

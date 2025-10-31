@@ -1,0 +1,54 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1013" d:DesignHeight="882"
+             x:Class="NoterApp.Views.NoteEditorView"
+             xmlns:vm="using:NoterApp.ViewModels"
+             x:DataType="vm:NoteEditorViewModel"
+             Background="#121212">
+    <Grid>
+        <ScrollViewer>
+            <Grid RowDefinitions="Auto,Auto,*">
+                <TextBox Grid.Row="0" Name="TxtTitle"
+                         Classes="frameless" Margin="140 20 140 5" MaxHeight="95" FontSize="37" FontWeight="SemiBold"
+                         Text="test test" MaxLength="70" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="1150" />
+                <Border Grid.Row="1" Height="1" Background="#404040" Margin="130 0" MaxWidth="1150" />
+                <TextBox Grid.Row="2" Name="TxtBody" Classes="frameless" Margin="140 10" Text="test body" FontSize="16"
+                         AcceptsReturn="True"
+                         AcceptsTab="True" TextWrapping="Wrap" MaxWidth="1150" />
+            </Grid>
+        </ScrollViewer>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40 20"
+                    Height="36">
+            <Button Name="BtnAlignment"
+                    Background="Transparent" CornerRadius="10" Height="36" Width="36" Padding="6 6"
+                    Click="BtnAlignment_OnClick" ToolTip.Placement="Bottom" ToolTip.VerticalOffset="-5">
+                <ToolTip.Tip>
+                    <StackPanel>
+                        <TextBlock Name="BtnAlignmentTipLine1" Background="Transparent" Text="Current: Left Align"
+                                   TextAlignment="Center" LetterSpacing="-0.3" />
+                        <TextBlock Name="BtnAlignmentTipLine2" Background="Transparent" Text="Next: Center Align"
+                                   TextAlignment="Center" LetterSpacing="-0.3" />
+                    </StackPanel>
+                </ToolTip.Tip>
+                <Svg Name="SvgAlignment" Path="/Assets/Icons/text-align-start.svg"
+                     Css="path, circle { stroke: #717171; }" />
+            </Button>
+            <Button Name="BtnMode"
+                    Background="Transparent" CornerRadius="10" Height="36" Width="36" Padding="6 6"
+                    Click="BtnMode_OnClick" ToolTip.Placement="Bottom" ToolTip.VerticalOffset="-5">
+                <ToolTip.Tip>
+                    <StackPanel>
+                        <TextBlock Name="BtnModeTipLine1" Background="Transparent" Text="Current: Editing Mode"
+                                   TextAlignment="Center" LetterSpacing="-0.3" />
+                        <TextBlock Name="BtnModeTipLine2" Background="Transparent" Text="Next: Reading Mode"
+                                   TextAlignment="Center" LetterSpacing="-0.3" />
+                    </StackPanel>
+                </ToolTip.Tip>
+                <Svg Name="SvgMode" Path="/Assets/Icons/book-open-text.svg" Css="path, circle { stroke: #717171; }" />
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

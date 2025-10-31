@@ -1,0 +1,39 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="TextBox.frameless">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type TextBox}">
+                <DataValidationErrors>
+                    <TextPresenter x:Name="PART_TextPresenter"
+                                   Text="{TemplateBinding Text, Mode=TwoWay}"
+                                   CaretBrush="{TemplateBinding CaretBrush}"
+                                   SelectionBrush="{TemplateBinding SelectionBrush}"
+                                   TextAlignment="{TemplateBinding TextAlignment}"
+                                   TextWrapping="{TemplateBinding TextWrapping}"
+                                   LineHeight="{TemplateBinding LineHeight}"
+                                   SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                   SelectionStart="{TemplateBinding SelectionStart}"
+                                   SelectionEnd="{TemplateBinding SelectionEnd}"
+                                   MaxHeight="{TemplateBinding MaxHeight}"
+                                   Background="{TemplateBinding Background}" />
+                </DataValidationErrors>
+            </ControlTemplate>
+        </Setter>
+
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="CaretBrush" Value="White" />
+        <Setter Property="SelectionBrush" Value="#651B1B" />
+        <Setter Property="SelectionForegroundBrush" Value="#FFFFFF"></Setter>
+        <Setter Property="Cursor" Value="IBeam"></Setter>
+        <Style Selector="^:pointerover">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style Selector="^:focus">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </Style>
+</Styles>

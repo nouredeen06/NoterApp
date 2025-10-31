@@ -1,0 +1,107 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:NoterApp.ViewModels"
+        xmlns:svg="using:Avalonia.Svg.Skia"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1240" d:DesignHeight="882"
+        Width="1240" Height="882"
+        x:Class="NoterApp.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="NoterApp" Background="#121212">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="Background" Value="#282828" />
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#282828" />
+        </Style>
+        <Style Selector="Button:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#282828" />
+        </Style>
+    </Window.Styles>
+    <Grid ShowGridLines="True" ColumnDefinitions="227,*">
+        <Border Grid.Column="0" Background="#282828">
+            <Grid ShowGridLines="True" RowDefinitions="142,*">
+                <StackPanel Grid.Row="1">
+                    <Button HorizontalAlignment="Left" Margin="30 5 0 5"
+                            Command="{Binding NavigateToDashboardCommand}"
+                            Name="btnDash"
+                            PointerEntered="Button_OnPointerEntered"
+                            PointerExited="Button_OnPointerExited"
+                            Click="Button_OnClick">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/layout-dashboard.svg" Height="28" VerticalAlignment="Center"
+                                 Css="path, circle { stroke: #E22727; }" Margin="0 0 8 0 " Opacity="1" Name="SvgDash" />
+                            <TextBlock Name="txtDash" Text="Dashboard" FontSize="17.5" FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#E22727" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" Margin="30 5 0 5"
+                            Command="{Binding NavigateToSettingsCommand}"
+                            Name="btnAllNotes">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/folders.svg" Height="28" VerticalAlignment="Center"
+                                 Css="path, circle { stroke: #FFFFFF; }" Margin="0 0 8 0 " Opacity="1"
+                                 Name="SvgAllNotes" />
+                            <TextBlock Name="txtAllNotes" Text="All Notes" FontSize="17.5" FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#FFFFFF" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" Margin="30 5 0 5"
+                            Command="{Binding NavigateToSettingsCommand}"
+                            Name="btnNewNote">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/square-pen.svg" Height="28" VerticalAlignment="Center"
+                                 Css="path, circle { stroke: #FFFFFF; }" Margin="0 0 8 0 " Opacity="1"
+                                 Name="SvgNewNote" />
+                            <TextBlock Name="txtNewNote" Text="New Note" FontSize="17.5" FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#FFFFFF" />
+                            <Button HorizontalAlignment="Right" Name="btnListTabs" Click="BtnListTabs_OnClick">
+                                <Svg Name="SvgListTabs" Path="/Assets/Icons/chevron-down.svg"
+                                     Css="path, circle { stroke: #FFFFFF}" />
+                            </Button>
+                        </StackPanel>
+                    </Button>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <ItemsControl></ItemsControl>
+                        
+                    </ScrollViewer>
+                    <Button HorizontalAlignment="Left" Margin="30 5 0 5"
+                            Command="{Binding NavigateToSettingsCommand}"
+                            Name="btnTrash">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/trash-2.svg" Height="28" VerticalAlignment="Center"
+                                 Css="path, circle { stroke: #FFFFFF; }" Margin="0 0 8 0 " Opacity="1"
+                                 Name="SvgTrash" />
+                            <TextBlock Name="txtTrash" Text="Trash" FontSize="17.5" FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#FFFFFF" />
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" Margin="30 5 0 5"
+                            Command="{Binding NavigateToSettingsCommand}"
+                            Name="btnSettings"
+                            PointerEntered="Button_OnPointerEntered"
+                            PointerExited="Button_OnPointerExited"
+                            Click="Button_OnClick">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/settings.svg" Height="28" VerticalAlignment="Center"
+                                 Css="path, circle { stroke: #FFFFFF; }" Margin="0 0 8 0 " Opacity="1"
+                                 Name="SvgSettings" />
+                            <TextBlock Name="txtSettings" Text="Settings" FontSize="17.5" FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#FFFFFF" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" Name="ContentControl"/>
+    </Grid>
+
+</Window>
