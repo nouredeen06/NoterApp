@@ -47,7 +47,6 @@
                       BorderBrush="#121212" Margin="17.5 22.5 0 15" CornerRadius="7.5">
                 <ComboBoxItem>test 1</ComboBoxItem>
             </ComboBox>
-            <Button Command="{Binding createnoteCommand}"></Button>
             <TextBox Height="45" CornerRadius="22.5" Background="#282828" Watermark="Search..." Margin="11 0"
                      HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="15"
                      Padding="19.5 0" BorderThickness="0" />
@@ -75,26 +74,29 @@
         </StackPanel>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                       HorizontalContentAlignment="Right">
-            <ItemsControl ItemsSource="{Binding NotePreviewList}" Margin="13 20">
+            <ItemsControl ItemsSource="{Binding _allNotes}" Margin="13 20">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel ItemWidth="232" ItemHeight="229" ItemSpacing="10" LineSpacing="10" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="models:NotePreview">
+                    <DataTemplate DataType="models:NoteIndexItem">
                         <Button Width="232" Height="229" Padding="0" Background="#282828" CornerRadius="7.5">
                             <StackPanel>
-                                <TextBlock Text="{Binding title}" FontSize="15" FontWeight="SemiBold"
-                                           Margin="7.5 7.5 9 3.5" />
-                                <TextBlock Text="{Binding body}" FontSize="10.5" FontWeight="Regular" Height="125"
-                                           Margin="7.5 0" TextWrapping="Wrap">
-                                </TextBlock>
-                                <Border MinWidth="45" Height="20" Background="{Binding tagColor}"
+                                <TextBlock Text="{Binding Title}" FontSize="15" FontWeight="SemiBold"
+                                           Margin="7.5 7.5 9 3.5" TextTrimming="CharacterEllipsis"
+                                           TextWrapping="NoWrap" />
+                                <Border Height="125" Background="Transparent">
+                                    <TextBlock Text="{Binding BodySnippet}" FontSize="10.5" FontWeight="Regular"
+                                               Height="103" MaxHeight="103"
+                                               Margin="7.5 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
+                                </Border>
+                                <Border MinWidth="45" Height="20" Background="#bb0000"
                                         HorizontalAlignment="Left"
                                         CornerRadius="10"
                                         Margin="7.5 6.5">
-                                    <TextBlock Text="{Binding tag}" FontSize="10" HorizontalAlignment="Center"
+                                    <TextBlock Text="a" FontSize="10" HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
                                                FontWeight="SemiBold" LetterSpacing="0.2" Margin="7.5 0" />
                                 </Border>

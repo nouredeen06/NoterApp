@@ -1,0 +1,53 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:NoterApp.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="60"
+        Width="350" MinHeight="60"
+        x:Class="NoterApp.Views.DialogView"
+        x:DataType="vm:DialogViewViewModel"
+        SizeToContent="Height"
+        Background="#121212">
+    <Window.Styles>
+        <Style Selector="Button.main">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.main:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.main:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.other">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+        <Style Selector="Button.other:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+        <Style Selector="Button.other:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+    </Window.Styles>
+    <Grid RowDefinitions="Auto,50">
+        <TextBlock Grid.Row="0" Text="{Binding DialogMessage}" TextWrapping="Wrap" MaxLines="2"
+                   TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                   Margin="20 15" FontSize="14" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*" RowDefinitions="*" ShowGridLines="True">
+            <Button Grid.Column="0" Name="btnSave" Classes="main" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Width="110"
+                    Height="35" Content="Save" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    FontSize="14" />
+            <Button Grid.Column="1" Name="btnDiscard" Classes="other" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Width="110"
+                    Height="35" Content="Discard" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    FontSize="14" />
+            <Button Grid.Column="2" Name="btnCancel" Classes="other" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Width="110"
+                    Height="35" Content="Cancel" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    FontSize="14" />
+        </Grid>
+    </Grid>
+
+</Window>

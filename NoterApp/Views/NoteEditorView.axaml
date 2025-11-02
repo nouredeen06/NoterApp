@@ -12,9 +12,12 @@
             <Grid RowDefinitions="Auto,Auto,*">
                 <TextBox Grid.Row="0" Name="TxtTitle"
                          Classes="frameless" Margin="140 20 140 5" MaxHeight="95" FontSize="37" FontWeight="SemiBold"
-                         Text="test test" MaxLength="70" AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="1150" />
+                         Text="{Binding Title, UpdateSourceTrigger=LostFocus}" MaxLength="70" AcceptsReturn="False"
+                         TextWrapping="Wrap"
+                         MaxWidth="1150" />
                 <Border Grid.Row="1" Height="1" Background="#404040" Margin="130 0" MaxWidth="1150" />
-                <TextBox Grid.Row="2" Name="TxtBody" Classes="frameless" Margin="140 10" Text="test body" FontSize="16"
+                <TextBox Grid.Row="2" Name="TxtBody" Classes="frameless" Margin="140 10" Text="{Binding Body}"
+                         FontSize="16"
                          AcceptsReturn="True"
                          AcceptsTab="True" TextWrapping="Wrap" MaxWidth="1150" />
             </Grid>

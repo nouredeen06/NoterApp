@@ -36,13 +36,13 @@ public class NoteService
         return _noteIndex.Values.OrderByDescending(n => n.DateCreated).ToList();
     }
 
-    public async Task<NoteManifest> CreateNewNoteAsync()
+    public NoteManifest CreateNewNote()
     {
-        var newId = Guid.NewGuid();
+        // var newId = Guid.NewGuid();
         var now = DateTime.UtcNow;
         var manifest = new NoteManifest
         {
-            ID = newId,
+            ID = Guid.NewGuid(),
             Title = "Untitled Note",
             DateCreated = now,
             CurrentVersion = 1,
@@ -52,15 +52,15 @@ public class NoteService
             }
         };
 
-        var NoteDir = Path.Combine(_notesDirectory, newId.ToString());
-        Directory.CreateDirectory(NoteDir);
-
-        await File.WriteAllTextAsync(Path.Combine(NoteDir, "1.txt"), "Untitled Note");
-        var manifestJson = JsonSerializer.Serialize(manifest, _jsonOptions);
-        await File.WriteAllTextAsync(Path.Combine(NoteDir, "meta.json"), manifestJson);
-
-        _noteIndex[newId] = new NoteIndexItem { Title = manifest.Title, DateCreated = now };
-        await SaveIndexAsync();
+        // var NoteDir = Path.Combine(_notesDirectory, newId.ToString());
+        // Directory.CreateDirectory(NoteDir);
+        //
+        // await File.WriteAllTextAsync(Path.Combine(NoteDir, "1.txt"), "Untitled Note");
+        // var manifestJson = JsonSerializer.Serialize(manifest, _jsonOptions);
+        // await File.WriteAllTextAsync(Path.Combine(NoteDir, "meta.json"), manifestJson);
+        //
+        // _noteIndex[newId] = new NoteIndexItem { ID = manifest.ID, Title = manifest.Title, DateCreated = now };
+        // await SaveIndexAsync();
 
         return manifest;
     }
@@ -91,20 +91,39 @@ public class NoteService
         var now = DateTime.UtcNow;
         var noteDir = Path.Combine(_notesDirectory, manifest.ID.ToString());
 
-        var newVersionNumber = manifest.CurrentVersion + 1;
-        var newFileName = $"{newVersionNumber}.txt";
-        var newContentPath = Path.Combine(noteDir, newFileName);
-        await File.WriteAllTextAsync(newContentPath, newContent);
+        if (!Directory.Exists(noteDir))
+        {
+            Directory.CreateDirectory(noteDir);
 
-        manifest.CurrentVersion = newVersionNumber;
-        manifest.Versions.Add(new NoteVersion
-            { Version = newVersionNumber, FileName = newFileName, TimeStamp = now });
+            var contentPath = Path.Combine(noteDir, manifest.Versions.First().FileName);
+            await File.WriteAllTextAsync(contentPath, newContent);
 
-        var manifestJson = JsonSerializer.Serialize(manifest, _jsonOptions);
-        await File.WriteAllTextAsync(Path.Combine(noteDir, "meta.json"), manifestJson);
+            var manifestJson = JsonSerializer.Serialize(manifest, _jsonOptions);
+            await File.WriteAllTextAsync(Path.Combine(noteDir, "meta.json"), manifestJson);
+        }
+        else
+        {
+            var newVersionNumber = manifest.CurrentVersion + 1;
+            var newFileName = $"{newVersionNumber}.txt";
+            var newContentPath = Path.Combine(noteDir, newFileName);
+            await File.WriteAllTextAsync(newContentPath, newContent);
 
-        _noteIndex[manifest.ID].Title = manifest.Title;
-        _noteIndex[manifest.ID].DateModified = now;
+            manifest.CurrentVersion = newVersionNumber;
+            manifest.Versions.Add(new NoteVersion
+                { Version = newVersionNumber, FileName = newFileName, TimeStamp = now });
+            var manifestJson = JsonSerializer.Serialize(manifest, _jsonOptions);
+            await File.WriteAllTextAsync(Path.Combine(noteDir, "meta.json"), manifestJson);
+            Console.WriteLine(noteDir);
+        }
+
+        int SnippetLength = Math.Min(newContent.Length, 350);
+        _noteIndex[manifest.ID] = new NoteIndexItem
+        {
+            ID = manifest.ID,
+            Title = manifest.Title,
+            BodySnippet = newContent.Substring(0, SnippetLength),
+            DateModified = manifest.Versions.Last().TimeStamp
+        };
         await SaveIndexAsync();
     }
 
