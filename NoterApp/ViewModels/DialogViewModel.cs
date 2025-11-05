@@ -2,7 +2,7 @@
 
 namespace NoterApp.ViewModels;
 
-public partial class DialogViewViewModel : ViewModelBase
+public partial class DialogViewModel : ViewModelBase
 {
     [ObservableProperty] public string noteTitle;
     [ObservableProperty] private string dialogMessage;
@@ -10,7 +10,7 @@ public partial class DialogViewViewModel : ViewModelBase
     [ObservableProperty] private string dialogCancel;
 
 
-    public DialogViewViewModel()
+    public DialogViewModel()
     {
     }
 

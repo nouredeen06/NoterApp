@@ -1,0 +1,93 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:NoterApp.ViewModels"
+        xmlns:model="using:NoterApp.Models"
+        mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="300"
+        Width="200" Height="300"
+        xmlns:i="using:Avalonia.Xaml.Interactions"
+        x:Class="NoterApp.Views.TagEditorView"
+        x:DataType="vm:TagEditorViewModel"
+        x:Name="tagEditor"
+        Title="TagEditorView"
+        CanResize="False"
+        SystemDecorations="BorderOnly" WindowStartupLocation="CenterOwner">
+    <Window.DataContext>
+        <vm:TagEditorViewModel />
+    </Window.DataContext>
+    <Window.Styles>
+        <Style Selector="Button.main">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.main:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.main:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.other">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+        <Style Selector="Button.other:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+        <Style Selector="Button.other:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+    </Window.Styles>
+    <Border Background="Transparent" BorderThickness="1.5" BorderBrush="#414141">
+        <StackPanel>
+            <Grid ShowGridLines="False" RowDefinitions="2,255,*">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding TagsList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="model:FullTag">
+                                <Border Height="40" Background="{Binding ColorHex}" CornerRadius="2.5" Margin="5 3 5 0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox Margin="10 0 0 0" IsChecked="{Binding Selected}"
+                                                  Command="{Binding DataContext.ToggleTagSelectionCommand, ElementName=tagEditor}"
+                                                  CommandParameter="{Binding .}" Foreground="Aqua" />
+                                        <TextBlock Height="25" Width="120"
+                                                   VerticalAlignment="Center" FontSize="20"
+                                                   HorizontalAlignment="Left" Margin="4 0" Text="{Binding Name}"
+                                                   FontWeight="Medium" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <Border Grid.Row="1" Background="#282828" Width="39" Height="35" HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom" CornerRadius="7.5 0  0 0">
+                    <Button Classes="other" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                            Height="30"
+                            Width="30"
+                            Margin="5 5 4 0" Padding="0">
+                        <Svg Path="/Assets/Icons/plus.svg" Height="20" Css="path, circle { stroke: #ffffff }" />
+                    </Button>
+                </Border>
+
+                <Border Grid.Row="2" Background="#282828" Height="39">
+                    <Grid ColumnDefinitions="*,*" ShowGridLines="False">
+                        <Button Grid.Column="0" Name="btnApply" Classes="main" HorizontalAlignment="Center"
+                                VerticalAlignment="Center" Width="90"
+                                Height="30" Content="Apply" HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                FontSize="14" />
+                        <Button Grid.Column="1" Name="btnCancel" Classes="other" HorizontalAlignment="Center"
+                                VerticalAlignment="Center" Width="90"
+                                Height="30" Content="Cancel" HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                FontSize="14" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </Border>
+</Window>

@@ -5,10 +5,14 @@
              xmlns:sty="using:Avalonia.Themes.Fluent"
              mc:Ignorable="d" d:DesignWidth="1013" d:DesignHeight="882"
              x:Class="NoterApp.Views.DashboardView"
+             x:Name="DashWindow"
              xmlns:vm="using:NoterApp.ViewModels"
              xmlns:models="using:NoterApp.Models"
              x:DataType="vm:DashboardViewModel"
              Background="#121212">
+    <Design.DataContext>
+        <vm:DashboardViewModel />
+    </Design.DataContext>
     <UserControl.Styles>
         <Style Selector="ComboBox">
             <Setter Property="Background" Value="#121212" />
@@ -59,7 +63,7 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="models:Tags">
+                        <DataTemplate DataType="models:FullTag">
                             <Button Background="#3F3F3F" Height="30" CornerRadius="15">
                                 <StackPanel Orientation="Horizontal">
                                     <Border Width="12" Height="12" Background="{Binding ColorHex}" CornerRadius="6" />
@@ -82,7 +86,9 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="models:NoteIndexItem">
-                        <Button Width="232" Height="229" Padding="0" Background="#282828" CornerRadius="7.5">
+                        <Button Width="232" Height="229" Padding="0" Background="#282828" CornerRadius="7.5"
+                                Command="{Binding DataContext.OpenNoteCommand , ElementName=DashWindow}"
+                                CommandParameter="{Binding ID}" Click="Button_OnClick">
                             <StackPanel>
                                 <TextBlock Text="{Binding Title}" FontSize="15" FontWeight="SemiBold"
                                            Margin="7.5 7.5 9 3.5" TextTrimming="CharacterEllipsis"

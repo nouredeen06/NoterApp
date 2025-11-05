@@ -4,11 +4,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:NoterApp.ViewModels"
         mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="60"
-        Width="350" MinHeight="60"
+        Width="350" MinHeight="99"
         x:Class="NoterApp.Views.DialogView"
-        x:DataType="vm:DialogViewViewModel"
+        x:DataType="vm:DialogViewModel"
         SizeToContent="Height"
-        Background="#121212">
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        SystemDecorations="BorderOnly"
+        CanResize="False">
     <Window.Styles>
         <Style Selector="Button.main">
             <Setter Property="Background" Value="#B80000" />
@@ -29,25 +32,29 @@
             <Setter Property="Background" Value="#414141" />
         </Style>
     </Window.Styles>
-    <Grid RowDefinitions="Auto,50">
-        <TextBlock Grid.Row="0" Text="{Binding DialogMessage}" TextWrapping="Wrap" MaxLines="2"
-                   TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
-                   Margin="20 15" FontSize="14" />
+    <Border Background="#121212" BorderBrush="#414141" BorderThickness="1.25" CornerRadius="5">
+        <Grid RowDefinitions="Auto,50">
+            <TextBlock Grid.Row="0" Text="{Binding DialogMessage}" TextWrapping="Wrap" MaxLines="2"
+                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                       Margin="20 15" FontSize="14" />
 
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*" RowDefinitions="*" ShowGridLines="True">
-            <Button Grid.Column="0" Name="btnSave" Classes="main" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Width="110"
-                    Height="35" Content="Save" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    FontSize="14" />
-            <Button Grid.Column="1" Name="btnDiscard" Classes="other" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Width="110"
-                    Height="35" Content="Discard" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    FontSize="14" />
-            <Button Grid.Column="2" Name="btnCancel" Classes="other" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Width="110"
-                    Height="35" Content="Cancel" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    FontSize="14" />
+            <Grid Grid.Row="1" ColumnDefinitions="*,*,*" RowDefinitions="*" ShowGridLines="False">
+                <Button Grid.Column="0" Name="btnSave" Classes="main" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Width="110"
+                        Height="35" Content="Save" HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="14" />
+                <Button Grid.Column="1" Name="btnDiscard" Classes="other" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Width="110"
+                        Height="35" Content="Discard" HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="14" />
+                <Button Grid.Column="2" Name="btnCancel" Classes="other" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Width="110"
+                        Height="35" Content="Cancel" HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="14" />
+            </Grid>
         </Grid>
-    </Grid>
-
+    </Border>
 </Window>

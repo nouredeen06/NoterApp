@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NoterApp.Extensions;
@@ -12,26 +14,37 @@ namespace NoterApp.ViewModels;
 
 public partial class DashboardViewModel : ViewModelBase
 {
-    public ObservableCollection<Tags> TagsList { get; }
+    public ObservableCollection<FullTag> TagsList { get; }
 
     public ObservableCollection<NoteIndexItem> _allNotes { get; set; }
 
+    public MainWindowViewModel? Shell { get; set; }
 
     public DashboardViewModel()
     {
-        TagsList = new ObservableCollection<Tags>
+        var colorsLookups = AppColors.DarkHexLookup;
+        var tags = DataService.Instance.GetAllTags();
+        TagsList = new ObservableCollection<FullTag>();
+        foreach (var tag in tags)
         {
-            new() { Name = "Tag 1", ColorHex = "#FF0000" },
-            new() { Name = "Tagaaaaaaaaaa 2", ColorHex = "#CF7010" },
-            new() { Name = "TagTag Tag 3", ColorHex = "#196082" }
-        };
+            TagsList.Add(new FullTag { Name = tag.Name, ColorHex = colorsLookups[tag.ColorName] });
+        }
+
         ListNotes();
-        
+    }
+
+    [RelayCommand]
+    private void OpenNote(Guid noteID)
+    {
+        if (Shell != null && Shell.GoToNoteCommand.CanExecute(noteID))
+        {
+            Shell.GoToNoteCommand.Execute(noteID);
+        }
     }
 
     public void ListNotes()
     {
-        var notesFromIndex = NoteService.Instance.GetAllNotesFromIndex();
+        var notesFromIndex = DataService.Instance.GetAllNotesFromIndex();
         _allNotes = new ObservableCollection<NoteIndexItem>(notesFromIndex);
         _allNotes.Sort(NoteIndexItem => NoteIndexItem.DateModified, true);
     }

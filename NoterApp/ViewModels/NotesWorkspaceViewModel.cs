@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using NoterApp.Services;
@@ -21,6 +23,7 @@ public partial class NotesWorkspaceViewModel : ViewModelBase
         _setActiveNote = setActiveNote;
     }
 
+
     public async Task OpenNoteByID(Guid noteID)
     {
         var existingNote = OpenNotes.FirstOrDefault(n => n._manifest.ID == noteID);
@@ -30,7 +33,7 @@ public partial class NotesWorkspaceViewModel : ViewModelBase
             return;
         }
 
-        var (manifest, content) = await NoteService.Instance.OpenNoteAsync(noteID);
+        var (manifest, content) = await DataService.Instance.OpenNoteAsync(noteID);
         var newNoteViewModel = new NoteEditorViewModel(manifest, content);
 
         _openNotes.Add(newNoteViewModel);
@@ -40,10 +43,10 @@ public partial class NotesWorkspaceViewModel : ViewModelBase
     [RelayCommand]
     private void CreateNewNote()
     {
-        var manifest = NoteService.Instance.CreateNewNote();
+        var manifest = DataService.Instance.CreateNewNote();
 
         // 2. Create the ViewModel for this new, virtual note.
-        var newNoteViewModel = new NoteEditorViewModel(manifest , "");
+        var newNoteViewModel = new NoteEditorViewModel(manifest, "");
 
         // 3. Add the new tab to the list of open notes.
         _openNotes.Add(newNoteViewModel);

@@ -5,18 +5,50 @@
              mc:Ignorable="d" d:DesignWidth="1013" d:DesignHeight="882"
              x:Class="NoterApp.Views.NoteEditorView"
              xmlns:vm="using:NoterApp.ViewModels"
+             xmlns:models="clr-namespace:NoterApp.Models"
              x:DataType="vm:NoteEditorViewModel"
              Background="#121212">
     <Grid>
         <ScrollViewer>
-            <Grid RowDefinitions="Auto,Auto,*">
+            <Grid RowDefinitions="Auto,Auto,Auto,*">
                 <TextBox Grid.Row="0" Name="TxtTitle"
                          Classes="frameless" Margin="140 20 140 5" MaxHeight="95" FontSize="37" FontWeight="SemiBold"
                          Text="{Binding Title, UpdateSourceTrigger=LostFocus}" MaxLength="70" AcceptsReturn="False"
                          TextWrapping="Wrap"
                          MaxWidth="1150" />
                 <Border Grid.Row="1" Height="1" Background="#404040" Margin="130 0" MaxWidth="1150" />
-                <TextBox Grid.Row="2" Name="TxtBody" Classes="frameless" Margin="140 10" Text="{Binding Body}"
+                <ScrollViewer Grid.Row="2" Margin="130 0 " HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Hidden"
+                              Height="45"
+                              VerticalContentAlignment="Top">
+                    <StackPanel Orientation="Horizontal">
+                        <ItemsControl ItemsSource="{Binding NoteTagsList}" Margin=" 7.5 7.5">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="7.5" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:FullTag">
+                                    <Button Background="#3F3F3F" Height="30" CornerRadius="15">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Width="12" Height="12" Background="{Binding ColorHex}"
+                                                    CornerRadius="6" />
+                                            <TextBlock Foreground="White" Text="{Binding Name}" FontSize="12"
+                                                       VerticalAlignment="Center" Margin="6 0" />
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Margin="0" Height="27" Width="27" CornerRadius="15" Background="#121212"
+                                BorderThickness="1.5"
+                                BorderBrush="#525252" Padding="0" Command="{Binding EditNoteTagsCommand}">
+                            <Svg Path="/Assets/Icons/plus.svg" Css="path, circle { stroke:#525252 }" Height="20" />
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
+                <TextBox Grid.Row="3" Name="TxtBody" Classes="frameless" Margin="140 1" Text="{Binding Body}"
                          FontSize="16"
                          AcceptsReturn="True"
                          AcceptsTab="True" TextWrapping="Wrap" MaxWidth="1150" />

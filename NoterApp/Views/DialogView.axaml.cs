@@ -13,14 +13,14 @@ public partial class DialogView : Window
 
         btnSave.Click += (_, _) =>
         {
-            if (DataContext is DialogViewViewModel viewModel)
+            if (DataContext is DialogViewModel viewModel)
             {
                 Close("save");
             }
         };
         btnDiscard.Click += (_, _) =>
         {
-            if (DataContext is DialogViewViewModel viewModel)
+            if (DataContext is DialogViewModel viewModel)
             {
                 Close("discard");
             }
@@ -28,7 +28,7 @@ public partial class DialogView : Window
 
         btnCancel.Click += (_, _) =>
         {
-            if (DataContext is DialogViewViewModel viewModel)
+            if (DataContext is DialogViewModel viewModel)
             {
                 Close("cancel");
             }

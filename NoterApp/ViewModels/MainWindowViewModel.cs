@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,41 +16,32 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     [ObservableProperty] private object _currentViewModel;
 
-    public readonly DashboardViewModel _dashboardViewModel;
-    public readonly SettingsViewModel _settingsViewModel;
+    public DashboardViewModel _dashboardViewModel { get; }
+    public SettingsViewModel _settingsViewModel { get; }
+    public TagEditorViewModel _tagEditorViewModel { get; }
 
     [ObservableProperty] private ObservableCollection<NoteEditorViewModel> _openNotes;
-
     [ObservableProperty] private NoteEditorViewModel? _activeNote;
+
 
     private readonly NotesWorkspaceViewModel _notesWorkspaceLogic;
 
-    private readonly IWindowManager _windowManager;
-    private readonly IServiceProvider _serviceProvider;
-
-
     public MainWindowViewModel()
     {
-        _openNotes = new ObservableCollection<NoteEditorViewModel>();
+        _dashboardViewModel = new DashboardViewModel();
+        _tagEditorViewModel = new TagEditorViewModel();
+        _dashboardViewModel.Shell = this;
 
+        _openNotes = new ObservableCollection<NoteEditorViewModel>();
         _notesWorkspaceLogic = new NotesWorkspaceViewModel(_openNotes, note => ActiveNote = note);
 
-        _dashboardViewModel = new DashboardViewModel();
-        _settingsViewModel = new SettingsViewModel();
         _currentViewModel = _dashboardViewModel;
     }
 
-    public MainWindowViewModel(IWindowManager windowManager, IServiceProvider serviceProvider)
+    [RelayCommand]
+    private void test()
     {
-        _openNotes = new ObservableCollection<NoteEditorViewModel>();
-
-        _notesWorkspaceLogic = new NotesWorkspaceViewModel(_openNotes, note => ActiveNote = note);
-
-        _dashboardViewModel = new DashboardViewModel();
-        _settingsViewModel = new SettingsViewModel();
-        _currentViewModel = _dashboardViewModel;
-        _windowManager = windowManager;
-        _serviceProvider = serviceProvider;
+        WindowManager.Instance.ShowWindow(new AddTagViewModel());
     }
 
     [RelayCommand]
@@ -59,7 +51,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private void NavigateToSettings() => CurrentViewModel = _settingsViewModel;
 
     [RelayCommand]
-    private async Task GoToNote(Guid noteID)
+    public async Task GoToNote(Guid noteID)
     {
         await _notesWorkspaceLogic.OpenNoteByID(noteID);
 
@@ -88,10 +80,10 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         if (noteToClose.IsDirty)
         {
-            var viewModel = new DialogViewViewModel();
+            var viewModel = new DialogViewModel();
             viewModel.noteTitle = noteToClose.Title;
             viewModel.OnLoaded();
-            string result = await _windowManager.ShowDialog<DialogViewViewModel, string>(viewModel);
+            string result = await WindowManager.Instance.ShowDialog<DialogViewModel, string>(viewModel);
 
             if (result == "save")
             {

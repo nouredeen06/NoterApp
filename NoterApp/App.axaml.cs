@@ -31,19 +31,23 @@ public partial class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            var services = new ServiceCollection();
-            services.AddSingleton<IWindowManager, WindowManager>();
-
-            services.AddTransient<MainWindowViewModel>();
-            services.AddTransient<DialogViewViewModel>();
-
-
-            Services = services.BuildServiceProvider();
-
-            var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
+            // var services = new ServiceCollection();
+            // // services.AddSingleton<IWindowManager, WindowManager>();
+            //
+            //
+            // //  services.AddTransient<DialogViewModel>();
+            // services.AddTransient<DashboardViewModel>();
+            // services.AddTransient<SettingsViewModel>();
+            // services.AddTransient<TagEditorViewModel>();
+            //
+            // services.AddSingleton<MainWindowViewModel>();
+            //
+            // Services = services.BuildServiceProvider();
+            //
+            // var mainWindowViewModel = Services.GetRequiredService<MainWindowViewModel>();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = mainWindowViewModel,
+                DataContext = new MainWindowViewModel(),
             };
             MainWindow = desktop.MainWindow;
         }

@@ -4,18 +4,22 @@
         <Setter Property="Template">
             <ControlTemplate TargetType="{x:Type TextBox}">
                 <DataValidationErrors>
-                    <TextPresenter x:Name="PART_TextPresenter"
-                                   Text="{TemplateBinding Text, Mode=TwoWay}"
-                                   CaretBrush="{TemplateBinding CaretBrush}"
-                                   SelectionBrush="{TemplateBinding SelectionBrush}"
-                                   TextAlignment="{TemplateBinding TextAlignment}"
-                                   TextWrapping="{TemplateBinding TextWrapping}"
-                                   LineHeight="{TemplateBinding LineHeight}"
-                                   SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
-                                   SelectionStart="{TemplateBinding SelectionStart}"
-                                   SelectionEnd="{TemplateBinding SelectionEnd}"
-                                   MaxHeight="{TemplateBinding MaxHeight}"
-                                   Background="{TemplateBinding Background}" />
+                    <Border Background="{TemplateBinding Background} " Padding="{TemplateBinding Padding}">
+                        <TextPresenter x:Name="PART_TextPresenter"
+                                       Text="{TemplateBinding Text, Mode=TwoWay}"
+                                       CaretBrush="{TemplateBinding CaretBrush}"
+                                       SelectionBrush="{TemplateBinding SelectionBrush}"
+                                       TextAlignment="{TemplateBinding TextAlignment}"
+                                       TextWrapping="{TemplateBinding TextWrapping}"
+                                       LineHeight="{TemplateBinding LineHeight}"
+                                       SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                       SelectionStart="{TemplateBinding SelectionStart}"
+                                       SelectionEnd="{TemplateBinding SelectionEnd}"
+                                       MaxHeight="{TemplateBinding MaxHeight}"
+                                       Width="{TemplateBinding Width}"
+                                       Height="{TemplateBinding Height}"
+                                       Background="{TemplateBinding Background}" />
+                    </Border>
                 </DataValidationErrors>
             </ControlTemplate>
         </Setter>

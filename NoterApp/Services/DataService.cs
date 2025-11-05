@@ -4,32 +4,47 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Avalonia.Platform;
 using NoterApp.Models;
 
 namespace NoterApp.Services;
 
-public class NoteService
+public class DataService
 {
-    private static readonly Lazy<NoteService> _instance = new(() => new NoteService());
-    public static NoteService Instance => _instance.Value;
+    private static readonly Lazy<DataService> _instance = new(() => new DataService());
+    public static DataService Instance => _instance.Value;
 
     private readonly string _notesDirectory;
     private readonly string _indexFilePath;
+    private readonly string _tagsFilePath;
     private readonly JsonSerializerOptions _jsonOptions;
 
     private Dictionary<Guid, NoteIndexItem> _noteIndex;
 
-    private NoteService()
+    private List<Tag> _tags;
+
+    private List<ColorInfo> _colors;
+
+    private DataService()
     {
         var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var appFolder = Path.Combine(appDataPath, "NoterApp");
         _notesDirectory = Path.Combine(appFolder, "Notes");
         _indexFilePath = Path.Combine(appFolder, "index.json");
+        _tagsFilePath = Path.Combine(appFolder, "tags.json");
         Directory.CreateDirectory(_notesDirectory);
 
         _jsonOptions = new JsonSerializerOptions { WriteIndented = true };
         _noteIndex = LoadIndex();
+        _tags = LoadTags();
+        // _colors = LoadColors();
     }
+
+    // -------------------------------------------------------------
+    //
+    //                      NOTES RELATED METHODS 
+    //
+    // -------------------------------------------------------------
 
     public List<NoteIndexItem> GetAllNotesFromIndex()
     {
@@ -38,7 +53,6 @@ public class NoteService
 
     public NoteManifest CreateNewNote()
     {
-        // var newId = Guid.NewGuid();
         var now = DateTime.UtcNow;
         var manifest = new NoteManifest
         {
@@ -52,18 +66,9 @@ public class NoteService
             }
         };
 
-        // var NoteDir = Path.Combine(_notesDirectory, newId.ToString());
-        // Directory.CreateDirectory(NoteDir);
-        //
-        // await File.WriteAllTextAsync(Path.Combine(NoteDir, "1.txt"), "Untitled Note");
-        // var manifestJson = JsonSerializer.Serialize(manifest, _jsonOptions);
-        // await File.WriteAllTextAsync(Path.Combine(NoteDir, "meta.json"), manifestJson);
-        //
-        // _noteIndex[newId] = new NoteIndexItem { ID = manifest.ID, Title = manifest.Title, DateCreated = now };
-        // await SaveIndexAsync();
-
         return manifest;
     }
+
 
     public async Task<(NoteManifest Manifest, string Content)> OpenNoteAsync(Guid NoteID)
     {
@@ -85,6 +90,7 @@ public class NoteService
 
         return (manifest, content);
     }
+
 
     public async Task SaveNoteAsync(NoteManifest manifest, string newContent)
     {
@@ -144,4 +150,55 @@ public class NoteService
         var json = JsonSerializer.Serialize(_noteIndex, _jsonOptions);
         await File.WriteAllTextAsync(_indexFilePath, json);
     }
+
+    // -------------------------------------------------------------
+    //
+    //                      TAGS RELATED METHODS 
+    //
+    // -------------------------------------------------------------
+
+    public List<Tag> GetAllTags() => _tags;
+
+    public async Task<Tag> AddTagAsync(string name, string color)
+    {
+        int newID = _tags.Any() ? _tags.Max(t => t.ID) + 1 : 0;
+        var newTag = new Tag { ID = newID, Name = name.Trim(), ColorName = color };
+        _tags.Add(newTag);
+        await SaveTagsAsync();
+        return newTag;
+    }
+
+    public async Task RemoveTagAsync(int tagID)
+    {
+        _tags.RemoveAll(t => t.ID == tagID);
+        await SaveTagsAsync();
+    }
+
+    public async Task UpdateTagAsync(Tag tagToUpdate)
+    {
+        var existingTag = _tags.FirstOrDefault(t => t.ID == tagToUpdate.ID);
+        if (existingTag != null)
+        {
+            existingTag.Name = tagToUpdate.Name;
+            existingTag.ColorName = tagToUpdate.ColorName;
+            await SaveTagsAsync();
+        }
+    }
+
+    private List<Tag> LoadTags()
+    {
+        if (!File.Exists(_tagsFilePath)) return new List<Tag>();
+        var json = File.ReadAllText(_tagsFilePath);
+        return JsonSerializer.Deserialize<List<Tag>>(json) ?? new List<Tag>();
+    }
+
+    private async Task SaveTagsAsync()
+    {
+        var json = JsonSerializer.Serialize(_tags, _jsonOptions);
+        await File.WriteAllTextAsync(_tagsFilePath, json);
+    }
+
+    public List<ColorInfo> GetColors() => _colors;
+
+   
 }

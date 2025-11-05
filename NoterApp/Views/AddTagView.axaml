@@ -1,0 +1,105 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="260" d:DesignHeight="300"
+        Width="260" MinHeight="300"
+        xmlns:vm="using:NoterApp.ViewModels"
+        x:DataType="vm:AddTagViewModel"
+        xmlns:models="using:NoterApp.Models"
+        x:Class="NoterApp.Views.AddTagView"
+        xmlns:conv="using:NoterApp.Converters"
+        Title="AddTagView"
+        x:Name="AddTag"
+        Background="#121212">
+    <Window.DataContext>
+        <vm:AddTagViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <conv:IsEqualConverter x:Key="IsEqualConverter" />
+    </Window.Resources>
+    <Window.Styles>
+        <Style Selector="Button.main">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.main:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.main:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B80000" />
+        </Style>
+        <Style Selector="Button.other">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+        <Style Selector="Button.other:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+        <Style Selector="Button.other:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#414141" />
+        </Style>
+        <Style Selector="ToggleButton">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+        <Style Selector="ToggleButton:checked /template/ ContentPresenter">
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="BorderBrush" Value="#B80000" />
+            <Setter Property="Background" Value="{TemplateBinding Background}" />
+        </Style>
+        <Style Selector="ToggleButton:pointerover /template/ ContentPresenter">
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="BorderBrush" Value="#ff6666" />
+            <Setter Property="Background" Value="{TemplateBinding Background}" />
+        </Style>
+    </Window.Styles>
+    <Grid RowDefinitions="*,50">
+        <StackPanel Grid.Row="0">
+            <TextBox Margin="10" Height="35" Watermark="Enter Tag Name..." />
+            <Grid Margin="10 10 10 0">
+                <Border Height="2" Background="#424242" />
+                <TextBlock Text=" Tag Color " Foreground="#a1a1a1" Background="#121212" FontWeight="SemiBold"
+                           VerticalAlignment="Center" HorizontalAlignment="Center">
+                </TextBlock>
+            </Grid>
+            <ItemsControl ItemsSource="{Binding  AllColors}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" MaxWidth="240" Height="300" Margin="5" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:ColorInfo">
+                        <ToggleButton Background="{Binding hex}" Width="24" Height="24" Margin="3" CornerRadius="5"
+                                      Command="{Binding DataContext.SelectColorCommand, ElementName=AddTag}"
+                                      CommandParameter="{Binding .}">
+                            <ToggleButton.IsChecked>
+                                <MultiBinding Converter="{StaticResource IsEqualConverter}">
+                                    <Binding Path="." />
+                                    <Binding Path="DataContext.SelectedColor" ElementName="AddTag" />
+                                </MultiBinding>
+                            </ToggleButton.IsChecked>
+                            <ToolTip.Tip>
+                                <TextBlock Text="{Binding name}" />
+                            </ToolTip.Tip>
+                        </ToggleButton>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" ShowGridLines="True">
+            <Button Grid.Column="1" Name="btnCancel" Classes="other" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Width="120"
+                    Height="35" Content="Cancel" HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontSize="14" />
+            <Button Grid.Column="0" Name="btnSave" Classes="main" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Width="120"
+                    Height="35" Content="Save" HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontSize="14" />
+        </Grid>
+    </Grid>
+
+
+</Window>
