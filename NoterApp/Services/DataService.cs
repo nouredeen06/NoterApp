@@ -119,7 +119,6 @@ public class DataService
                 { Version = newVersionNumber, FileName = newFileName, TimeStamp = now });
             var manifestJson = JsonSerializer.Serialize(manifest, _jsonOptions);
             await File.WriteAllTextAsync(Path.Combine(noteDir, "meta.json"), manifestJson);
-            Console.WriteLine(noteDir);
         }
 
         int SnippetLength = Math.Min(newContent.Length, 350);
@@ -185,7 +184,7 @@ public class DataService
         }
     }
 
-    private List<Tag> LoadTags()
+    public List<Tag> LoadTags()
     {
         if (!File.Exists(_tagsFilePath)) return new List<Tag>();
         var json = File.ReadAllText(_tagsFilePath);

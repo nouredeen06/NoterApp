@@ -68,7 +68,7 @@
                     <Button Classes="other" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                             Height="30"
                             Width="30"
-                            Margin="5 5 4 0" Padding="0">
+                            Margin="5 5 4 0" Padding="0" Command="{Binding CreateTagCommand}">
                         <Svg Path="/Assets/Icons/plus.svg" Height="20" Css="path, circle { stroke: #ffffff }" />
                     </Button>
                 </Border>

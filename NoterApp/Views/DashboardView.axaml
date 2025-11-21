@@ -85,7 +85,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="models:NoteIndexItem">
+                    <DataTemplate DataType="vm:NoteDashItem">
                         <Button Width="232" Height="229" Padding="0" Background="#282828" CornerRadius="7.5"
                                 Command="{Binding DataContext.OpenNoteCommand , ElementName=DashWindow}"
                                 CommandParameter="{Binding ID}" Click="Button_OnClick">
@@ -98,14 +98,26 @@
                                                Height="103" MaxHeight="103"
                                                Margin="7.5 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
                                 </Border>
-                                <Border MinWidth="45" Height="20" Background="#bb0000"
-                                        HorizontalAlignment="Left"
-                                        CornerRadius="10"
-                                        Margin="7.5 6.5">
-                                    <TextBlock Text="a" FontSize="10" HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               FontWeight="SemiBold" LetterSpacing="0.2" Margin="7.5 0" />
-                                </Border>
+                                <ItemsControl ItemsSource="{Binding Tags }">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border MinWidth="45" Height="20" Background="{Binding ColorName}"
+                                                    HorizontalAlignment="Left"
+                                                    CornerRadius="10"
+                                                    Margin="7.5 6.5">
+                                                <TextBlock Text="{Binding Name}" FontSize="10"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           FontWeight="SemiBold" LetterSpacing="0.2" Margin="7.5 0" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                                 <StackPanel Orientation="Horizontal">
                                     <Button Width="101" Height="30" CornerRadius="3.75" Background="#282828"
                                             BorderThickness="0.75"

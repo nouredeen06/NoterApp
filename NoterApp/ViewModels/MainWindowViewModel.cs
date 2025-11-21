@@ -9,22 +9,27 @@ using CommunityToolkit.Mvvm.Input;
 using NoterApp.Models;
 using NoterApp.Services;
 using NoterApp.Views;
+using System.Reactive.Linq;
 
 namespace NoterApp.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    [ObservableProperty] private object _currentViewModel;
+    [ObservableProperty] private ViewModelBase _currentViewModel;
 
-    public DashboardViewModel _dashboardViewModel { get; }
-    public SettingsViewModel _settingsViewModel { get; }
-    public TagEditorViewModel _tagEditorViewModel { get; }
+    private DashboardViewModel _dashboardViewModel { get; }
+    private SettingsViewModel _settingsViewModel { get; }
+    private TagEditorViewModel _tagEditorViewModel { get; }
+
 
     [ObservableProperty] private ObservableCollection<NoteEditorViewModel> _openNotes;
     [ObservableProperty] private NoteEditorViewModel? _activeNote;
 
+    [ObservableProperty] private bool _isCollapsed;
+
 
     private readonly NotesWorkspaceViewModel _notesWorkspaceLogic;
+
 
     public MainWindowViewModel()
     {
@@ -41,8 +46,10 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void test()
     {
-        WindowManager.Instance.ShowWindow(new AddTagViewModel());
     }
+
+    [RelayCommand]
+    private void collapseSidebar() => IsCollapsed = !IsCollapsed;
 
     [RelayCommand]
     private void NavigateToDashboard() => CurrentViewModel = _dashboardViewModel;

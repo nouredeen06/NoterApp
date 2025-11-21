@@ -29,5 +29,6 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-rc.2.25502.107"/>
         <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.6.2"/>
+        <PackageReference Include="System.Reactive.Linq" Version="6.1.0" />
     </ItemGroup>
 </Project>

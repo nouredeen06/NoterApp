@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using ArqaamTestApp.Services;
 using CommunityToolkit.Mvvm.Input;
 using NoterApp.Models;
 using NoterApp.Services;
@@ -21,7 +23,6 @@ public partial class TagEditorViewModel : ViewModelBase
         var colorsLookups = AppColors.DarkHexLookup;
         var tags = DataService.Instance.GetAllTags();
         TagsList = new ObservableCollection<FullTag>();
-        // SelectedTags 
         foreach (var tag in tags)
         {
             bool selected = SelectedTags.Contains(tag.Name);
@@ -44,6 +45,20 @@ public partial class TagEditorViewModel : ViewModelBase
         else
         {
             SelectedTags.Add(tag.Name);
+        }
+    }
+
+    [RelayCommand]
+    private async Task CreateTag()
+    {
+        await WindowManager.Instance.ShowDialog<AddTagViewModel, bool>(new AddTagViewModel());
+        var colorsLookups = AppColors.DarkHexLookup;
+        var tags = DataService.Instance.GetAllTags();
+        TagsList.Clear();
+        foreach (var tag in tags)
+        {
+            bool selected = SelectedTags.Contains(tag.Name);
+            TagsList.Add(new FullTag { Selected = selected, Name = tag.Name, ColorHex = colorsLookups[tag.ColorName] });
         }
     }
 }

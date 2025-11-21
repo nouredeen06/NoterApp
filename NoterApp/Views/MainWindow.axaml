@@ -15,8 +15,6 @@
         Title="NoterApp" Background="#121212"
         WindowStartupLocation="CenterScreen">
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
@@ -54,24 +52,35 @@
 
     </Window.Styles>
     <Grid ShowGridLines="False" ColumnDefinitions="Auto,*">
-        
+
         <Border Grid.Column="0" Background="#282828" Width="227" Name="borderSidebar">
             <Border.Transitions>
                 <Transitions>
                     <DoubleTransition Property="Width" Duration="0:0:0.8" Delay="0" Easing="CubicEaseInOut" />
                 </Transitions>
             </Border.Transitions>
-            <Grid ShowGridLines="True" RowDefinitions="142,*">
-                <Button Grid.Row="0" Background="Blue" Height="25" Width="25" Command="{Binding testCommand}"/>        
-                <Button Grid.Row="0" Classes="sidebar" Background="#383838" HorizontalAlignment="Right" Height="48"
-                        Width="48"
-                        CornerRadius="5 0 0 5"
-                        VerticalAlignment="Center" Name="btnMin" Click="BtnMin_OnClick">
-                    <Svg Name="svgSidebar" Path="/Assets/Icons/chevron-first.svg"
-                         Css="path, circle { stroke: #a4a4a4; }" />
-                </Button>
-                <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+            <Grid ShowGridLines="False" RowDefinitions="142,*">
+                <Grid ColumnDefinitions="Auto,*">
                     <Border Grid.Column="0" Name="borderMargin" Background="Transparent" Width="30" Margin="0">
+                        <Border.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Width" Duration="0:0:0.8" Delay="0"
+                                                  Easing="CubicEaseInOut" />
+                            </Transitions>
+                        </Border.Transitions>
+                    </Border>
+                    <Button Grid.Column="1" HorizontalAlignment="Left" Margin="0 5 0 3" VerticalAlignment="Top"
+                            Command="{Binding collapseSidebarCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/panel-left-close.svg" Height="28"
+                                 VerticalAlignment="Center"
+                                 Css="rect, path, circle { stroke: #ffffff; }" Opacity="1"
+                                 Name="SvgSidebar" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+                    <Border Grid.Column="0" Name="borderMargin2" Background="Transparent" Width="30" Margin="0">
                         <Border.Transitions>
                             <Transitions>
                                 <DoubleTransition Property="Width" Duration="0:0:0.8" Delay="0"
