@@ -6,84 +6,113 @@
              x:Class="NoterApp.Views.NoteEditorView"
              xmlns:vm="using:NoterApp.ViewModels"
              xmlns:models="clr-namespace:NoterApp.Models"
+             xmlns:conv="using:NoterApp.Converters"
              x:DataType="vm:NoteEditorViewModel"
              Background="#121212">
-    <Grid>
-        <ScrollViewer>
-            <Grid RowDefinitions="Auto,Auto,Auto,*">
-                <TextBox Grid.Row="0" Name="TxtTitle"
-                         Classes="frameless" Margin="140 20 140 5" MaxHeight="95" FontSize="37" FontWeight="SemiBold"
-                         Text="{Binding Title, UpdateSourceTrigger=LostFocus}" MaxLength="70" AcceptsReturn="False"
-                         TextWrapping="Wrap"
-                         MaxWidth="1150" />
-                <Border Grid.Row="1" Height="1" Background="#404040" Margin="130 0" MaxWidth="1150" />
-                <ScrollViewer Grid.Row="2" Margin="130 0 " HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Hidden"
-                              Height="45"
-                              VerticalContentAlignment="Top">
-                    <StackPanel Orientation="Horizontal">
-                        <ItemsControl ItemsSource="{Binding NoteTagsList}" Margin=" 7.5 7.5">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" Spacing="7.5" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="models:FullTag">
-                                    <Button Background="#3F3F3F" Height="30" CornerRadius="15">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Border Width="12" Height="12" Background="{Binding ColorHex}"
-                                                    CornerRadius="6" />
-                                            <TextBlock Foreground="White" Text="{Binding Name}" FontSize="12"
-                                                       VerticalAlignment="Center" Margin="6 0" />
-                                        </StackPanel>
-                                    </Button>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <Button Margin="0" Height="27" Width="27" CornerRadius="15" Background="#121212"
-                                BorderThickness="1.5"
-                                BorderBrush="#525252" Padding="0" Command="{Binding EditNoteTagsCommand}">
-                            <Svg Path="/Assets/Icons/plus.svg" Css="path, circle { stroke:#525252 }" Height="20" />
-                        </Button>
-                    </StackPanel>
-                </ScrollViewer>
-                <TextBox Grid.Row="3" Name="TxtBody" Classes="frameless" Margin="140 1" Text="{Binding Body}"
-                         FontSize="16"
-                         AcceptsReturn="True"
-                         AcceptsTab="True" TextWrapping="Wrap" MaxWidth="1150" />
+    <UserControl.Resources>
+        <conv:TagToHexConverter x:Key="TagToHexConverter" />
+    </UserControl.Resources>
+    <Grid ColumnDefinitions="*, Auto">
+        <Grid Grid.Column="0">
+            <ScrollViewer>
+                <Grid RowDefinitions="Auto,Auto,Auto,*">
+                    <TextBox Grid.Row="0" Name="TxtTitle"
+                             Classes="frameless" Margin="140 20 140 5" MaxHeight="95" FontSize="37" FontWeight="SemiBold"
+                             Text="{Binding Title, UpdateSourceTrigger=LostFocus}" MaxLength="70" AcceptsReturn="False"
+                             TextWrapping="Wrap"
+                             MaxWidth="1150" />
+                    <Border Grid.Row="1" Height="1" Background="#404040" Margin="130 0" MaxWidth="1150" />
+                    <ScrollViewer Grid.Row="2" Margin="130 0 " HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Hidden"
+                                  Height="45"
+                                  VerticalContentAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <ItemsControl ItemsSource="{Binding NoteTagsList}" Margin=" 7.5 7.5">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" Spacing="7.5" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Tag">
+                                        <Button Background="#3F3F3F" Height="30" CornerRadius="15">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Width="12" Height="12"
+                                                        Background="{Binding Name,Converter={StaticResource TagToHexConverter}}"
+                                                        CornerRadius="6" />
+                                                <TextBlock Foreground="White" Text="{Binding Name}" FontSize="12"
+                                                           VerticalAlignment="Center" Margin="6 0" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Margin="0" Height="27" Width="27" CornerRadius="15" Background="#121212"
+                                    BorderThickness="1.5"
+                                    BorderBrush="#525252" Padding="0">
+                                <Svg Path="/Assets/Icons/plus.svg" Css="path, circle { stroke:#525252 }" Height="20" />
+                            </Button>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <TextBox Grid.Row="3" Name="TxtBody" Classes="frameless" Margin="140 1" Text="{Binding Body}"
+                             FontSize="16"
+                             AcceptsReturn="True"
+                             AcceptsTab="True" TextWrapping="Wrap" MaxWidth="1150" />
+                </Grid>
+            </ScrollViewer>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="20 20"
+                        Height="36">
+                <Button Name="BtnAlignment"
+                        Background="Transparent" CornerRadius="10" Height="36" Width="36" Padding="6 6"
+                        Click="BtnAlignment_OnClick" ToolTip.Placement="Bottom" ToolTip.VerticalOffset="-5">
+                    <ToolTip.Tip>
+                        <StackPanel>
+                            <TextBlock Name="BtnAlignmentTipLine1" Background="Transparent" Text="Current: Left Align"
+                                       TextAlignment="Center" LetterSpacing="-0.3" />
+                            <TextBlock Name="BtnAlignmentTipLine2" Background="Transparent" Text="Next: Center Align"
+                                       TextAlignment="Center" LetterSpacing="-0.3" />
+                        </StackPanel>
+                    </ToolTip.Tip>
+                    <Svg Name="SvgAlignment" Path="/Assets/Icons/text-align-start.svg"
+                         Css="path, circle { stroke: #717171; }" />
+                </Button>
+                <Button Name="BtnMode"
+                        Background="Transparent" CornerRadius="10" Height="36" Width="36" Padding="6 6"
+                        Click="BtnMode_OnClick" ToolTip.Placement="Bottom" ToolTip.VerticalOffset="-5">
+                    <ToolTip.Tip>
+                        <StackPanel>
+                            <TextBlock Name="BtnModeTipLine1" Background="Transparent" Text="Current: Editing Mode"
+                                       TextAlignment="Center" LetterSpacing="-0.3" />
+                            <TextBlock Name="BtnModeTipLine2" Background="Transparent" Text="Next: Reading Mode"
+                                       TextAlignment="Center" LetterSpacing="-0.3" />
+                        </StackPanel>
+                    </ToolTip.Tip>
+                    <Svg Name="SvgMode" Path="/Assets/Icons/book-open-text.svg" Css="path, circle { stroke: #717171; }" />
+                </Button>
+                <Button Name="BtnHistory"
+                        Background="Transparent" CornerRadius="10" Height="36" Width="36" Padding="6 6"
+                        ToolTip.Placement="Bottom"
+                        ToolTip.VerticalOffset="-5">
+                    <ToolTip.Tip>
+                        <StackPanel>
+                            <TextBlock Name="BtnHistoryTipLine1" Background="Transparent" Text="Version History"
+                                       TextAlignment="Center" LetterSpacing="-0.3" />
+                        </StackPanel>
+                    </ToolTip.Tip>
+                    <Svg Name="SvgHistory" Path="/Assets/Icons/history.svg" Css="path, circle { stroke: #717171; }" />
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Border Grid.Column="1" BorderThickness="1 0 0 0" BorderBrush="#212121" Width="250" Background="#161616">
+            <Grid>
+                <Button ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" CornerRadius="10"
+                        Height="36" Width="36" Padding="2" Margin="20">
+                    <Svg Path="/Assets/Icons/x.svg" Css="path, circle { stroke: #717171; }" />
+                </Button>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Text="Version History" Margin="27" FontSize="17"
+                           Foreground="#717171" FontWeight="Medium">
+                </TextBlock>
             </Grid>
-        </ScrollViewer>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40 20"
-                    Height="36">
-            <Button Name="BtnAlignment"
-                    Background="Transparent" CornerRadius="10" Height="36" Width="36" Padding="6 6"
-                    Click="BtnAlignment_OnClick" ToolTip.Placement="Bottom" ToolTip.VerticalOffset="-5">
-                <ToolTip.Tip>
-                    <StackPanel>
-                        <TextBlock Name="BtnAlignmentTipLine1" Background="Transparent" Text="Current: Left Align"
-                                   TextAlignment="Center" LetterSpacing="-0.3" />
-                        <TextBlock Name="BtnAlignmentTipLine2" Background="Transparent" Text="Next: Center Align"
-                                   TextAlignment="Center" LetterSpacing="-0.3" />
-                    </StackPanel>
-                </ToolTip.Tip>
-                <Svg Name="SvgAlignment" Path="/Assets/Icons/text-align-start.svg"
-                     Css="path, circle { stroke: #717171; }" />
-            </Button>
-            <Button Name="BtnMode"
-                    Background="Transparent" CornerRadius="10" Height="36" Width="36" Padding="6 6"
-                    Click="BtnMode_OnClick" ToolTip.Placement="Bottom" ToolTip.VerticalOffset="-5">
-                <ToolTip.Tip>
-                    <StackPanel>
-                        <TextBlock Name="BtnModeTipLine1" Background="Transparent" Text="Current: Editing Mode"
-                                   TextAlignment="Center" LetterSpacing="-0.3" />
-                        <TextBlock Name="BtnModeTipLine2" Background="Transparent" Text="Next: Reading Mode"
-                                   TextAlignment="Center" LetterSpacing="-0.3" />
-                    </StackPanel>
-                </ToolTip.Tip>
-                <Svg Name="SvgMode" Path="/Assets/Icons/book-open-text.svg" Css="path, circle { stroke: #717171; }" />
-            </Button>
-        </StackPanel>
-
+        </Border>
     </Grid>
 </UserControl>

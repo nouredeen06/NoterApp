@@ -24,10 +24,9 @@ public partial class NoteEditorViewModel : ViewModelBase
 
     [ObservableProperty] private bool _isDirty;
 
-    private readonly Func<TagEditorViewModel, Task<List<string>>> openTagsEditor;
-    public ObservableCollection<FullTag> NoteTagsList { get; }
+    public ObservableCollection<Tag> NoteTagsList { get; }
     public IReadOnlyDictionary<string, string> colorsLookup { get; }
-    public Dictionary<string, string> tagsLookup { get; }
+    public List<Tag> tags { get; }
 
     public NoteEditorViewModel(NoteManifest manifest, string content)
     {
@@ -35,13 +34,8 @@ public partial class NoteEditorViewModel : ViewModelBase
         _title = manifest.Title;
         _body = content;
         _isDirty = false;
-        colorsLookup = AppColors.DarkHexLookup;
-        tagsLookup = DataService.Instance.GetAllTags().ToDictionary(Tag => Tag.Name, Tag => Tag.ColorName);
-        NoteTagsList = new ObservableCollection<FullTag>();
-        foreach (var tag in _manifest.Tags)
-        {
-            NoteTagsList.Add(new FullTag { Name = tag, ColorHex = colorsLookup[tagsLookup[tag]] });
-        }
+        tags = DataService.Instance.GetAllTags();
+        NoteTagsList = new ObservableCollection<Tag>(tags);
 
 
         PropertyChanged += (s, e) =>
@@ -63,25 +57,5 @@ public partial class NoteEditorViewModel : ViewModelBase
         await DataService.Instance.SaveNoteAsync(_manifest, Body);
 
         IsDirty = false;
-    }
-
-    [RelayCommand]
-    private async Task EditNoteTags()
-    {
-        var tagEditor = new TagEditorViewModel();
-        tagEditor.SelectedTags = new List<string>(_manifest.Tags);
-        tagEditor.OnLoaded();
-
-        var list = await WindowManager.Instance.ShowDialog<TagEditorViewModel, List<string>>(tagEditor);
-        
-        if (list == null) return;
-        
-        _manifest.Tags = list;
-        NoteTagsList.Clear();
-        IsDirty = true;
-        foreach (var tag in _manifest.Tags)
-        {
-            NoteTagsList.Add(new FullTag { Name = tag, ColorHex = colorsLookup[tagsLookup[tag]] });
-        }
     }
 }

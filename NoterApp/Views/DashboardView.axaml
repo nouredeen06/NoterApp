@@ -2,17 +2,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sty="using:Avalonia.Themes.Fluent"
+             xmlns:behaviors="using:NoterApp.Behaviors"
              mc:Ignorable="d" d:DesignWidth="1013" d:DesignHeight="882"
              x:Class="NoterApp.Views.DashboardView"
              x:Name="DashWindow"
              xmlns:vm="using:NoterApp.ViewModels"
              xmlns:models="using:NoterApp.Models"
+             xmlns:conv="using:NoterApp.Converters"
              x:DataType="vm:DashboardViewModel"
              Background="#121212">
     <Design.DataContext>
         <vm:DashboardViewModel />
     </Design.DataContext>
+    <UserControl.Resources>
+        <conv:TagToHexConverter x:Key="TagToHexConverter" />
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="ComboBox">
             <Setter Property="Background" Value="#121212" />
@@ -63,10 +67,12 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="models:FullTag">
+                        <DataTemplate DataType="models:Tag">
                             <Button Background="#3F3F3F" Height="30" CornerRadius="15">
                                 <StackPanel Orientation="Horizontal">
-                                    <Border Width="12" Height="12" Background="{Binding ColorHex}" CornerRadius="6" />
+                                    <Border Width="12" Height="12"
+                                            Background="{Binding Name, Converter={StaticResource TagToHexConverter}}"
+                                            CornerRadius="6" />
                                     <TextBlock Foreground="White" Text="{Binding Name}" FontSize="12"
                                                VerticalAlignment="Center" Margin="6 0" />
                                 </StackPanel>
@@ -89,39 +95,43 @@
                         <Button Width="232" Height="229" Padding="0" Background="#282828" CornerRadius="7.5"
                                 Command="{Binding DataContext.OpenNoteCommand , ElementName=DashWindow}"
                                 CommandParameter="{Binding ID}" Click="Button_OnClick">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Title}" FontSize="15" FontWeight="SemiBold"
+                            <Grid RowDefinitions="19,123,30,44">
+                                <TextBlock Grid.Row="0" Text="{Binding Title}" FontSize="15" FontWeight="SemiBold"
                                            Margin="7.5 7.5 9 3.5" TextTrimming="CharacterEllipsis"
                                            TextWrapping="NoWrap" />
-                                <Border Height="125" Background="Transparent">
+                                <Border Grid.Row="1" Height="125" Background="Transparent">
                                     <TextBlock Text="{Binding BodySnippet}" FontSize="10.5" FontWeight="Regular"
                                                Height="103" MaxHeight="103"
                                                Margin="7.5 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
                                 </Border>
-                                <ItemsControl ItemsSource="{Binding Tags }">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal" Margin="0" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border MinWidth="45" Height="20" Background="{Binding ColorName}"
-                                                    HorizontalAlignment="Left"
-                                                    CornerRadius="10"
-                                                    Margin="7.5 6.5">
-                                                <TextBlock Text="{Binding Name}" FontSize="10"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           FontWeight="SemiBold" LetterSpacing="0.2" Margin="7.5 0" />
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <StackPanel Orientation="Horizontal">
+                                <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Hidden"
+                                              VerticalScrollBarVisibility="Disabled"
+                                              behaviors:HorizontalScrollBehavior.IsEnabled="True">
+                                    <ItemsControl ItemsSource="{Binding Tags}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="7.5 0 " Spacing="5" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border MinWidth="45" Height="20"
+                                                        Background="{Binding ., Converter={StaticResource TagToHexConverter} }"
+                                                        HorizontalAlignment="Left"
+                                                        CornerRadius="10"
+                                                        Margin="0 6.5">
+                                                    <TextBlock Text="{Binding .}" FontSize="10" HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="SemiBold" LetterSpacing="0.2" Margin="7.5 0" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                                <StackPanel Grid.Row="3" Orientation="Horizontal">
                                     <Button Width="101" Height="30" CornerRadius="3.75" Background="#282828"
                                             BorderThickness="0.75"
-                                            BorderBrush="#575757" Margin="7.5 0 83 9" Padding="0">
+                                            BorderBrush="#575757" Margin="7.5 5 83 9" Padding="0">
                                         <StackPanel Orientation="Horizontal">
                                             <Svg Path="/Assets/Icons/trash-2.svg"
                                                  Css="path, circle { stroke: #7A6482; }"
@@ -134,13 +144,13 @@
                                     </Button>
                                     <Button Width="30" Height="30" CornerRadius="3.75" Background="#282828"
                                             BorderThickness="0.75"
-                                            BorderBrush="#575757" Margin="0 0 0 9" Padding="0"
+                                            BorderBrush="#575757" Margin="0 5 0 9" Padding="0"
                                             HorizontalAlignment="Right">
                                         <Svg Path="/Assets/Icons/pin.svg" Height="16"
                                              Css="path, circle { stroke: #7A6482; }" />
                                     </Button>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
                         </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

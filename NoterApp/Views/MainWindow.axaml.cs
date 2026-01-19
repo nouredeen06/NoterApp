@@ -117,6 +117,7 @@ public partial class MainWindow : Window
         {
             ScrollTabs.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
             ScrollTabs.MaxHeight = 0;
+            ScrollTabs.IsVisible = false;
             SvgListTabs.Path = "/Assets/Icons/chevron-down.svg";
             _isListTabsOpen = false;
         }
@@ -124,7 +125,7 @@ public partial class MainWindow : Window
         {
             ScrollTabs.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             ScrollTabs.MaxHeight = 132;
-
+            ScrollTabs.IsVisible = true;
             SvgListTabs.Path = "/Assets/Icons/chevron-up.svg";
             _isListTabsOpen = true;
         }
@@ -136,6 +137,7 @@ public partial class MainWindow : Window
         {
             ScrollTabs.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
             ScrollTabs.MaxHeight = 132;
+            ScrollTabs.IsVisible = true;
             SvgListTabs.Path = "/Assets/Icons/chevron-up.svg";
             _isListTabsOpen = true;
         }
@@ -156,9 +158,7 @@ public partial class MainWindow : Window
             txtTrash.Opacity = desiredOpacity;
             ScrollTabs.Opacity = desiredOpacity;
             btnListTabs.Opacity = desiredOpacity;
-
-            borderMargin.Width = 5;
-            borderMargin2.Width = 5;
+            
             borderSidebar.Width = 56;
 
             await Task.Delay(300);
@@ -182,10 +182,8 @@ public partial class MainWindow : Window
             txtTrash.IsVisible = true;
             ScrollTabs.IsVisible = true;
             btnListTabs.IsVisible = true;
-
-            borderMargin.Width = 30;
-            borderMargin2.Width = 30;
-            borderSidebar.Width = 227;
+            
+            borderSidebar.Width = 1801;
 
             desiredOpacity = 1;
             txtDash.Opacity = desiredOpacity;

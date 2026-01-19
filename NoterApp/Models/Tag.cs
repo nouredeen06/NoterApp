@@ -14,4 +14,5 @@ public class FullTag()
     public bool Selected { get; set; }
     public string? Name { get; set; }
     public string? ColorHex { get; set; }
+    public bool isDirty { get; set; }
 }

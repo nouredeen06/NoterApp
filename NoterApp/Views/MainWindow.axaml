@@ -53,199 +53,179 @@
     </Window.Styles>
     <Grid ShowGridLines="False" ColumnDefinitions="Auto,*">
 
-        <Border Grid.Column="0" Background="#282828" Width="227" Name="borderSidebar">
+        <Border Grid.Column="0" Background="#282828" Width="180" Name="borderSidebar" Padding="5">
             <Border.Transitions>
                 <Transitions>
                     <DoubleTransition Property="Width" Duration="0:0:0.8" Delay="0" Easing="CubicEaseInOut" />
                 </Transitions>
             </Border.Transitions>
             <Grid ShowGridLines="False" RowDefinitions="142,*">
-                <Grid ColumnDefinitions="Auto,*">
-                    <Border Grid.Column="0" Name="borderMargin" Background="Transparent" Width="30" Margin="0">
-                        <Border.Transitions>
-                            <Transitions>
-                                <DoubleTransition Property="Width" Duration="0:0:0.8" Delay="0"
-                                                  Easing="CubicEaseInOut" />
-                            </Transitions>
-                        </Border.Transitions>
-                    </Border>
-                    <Button Grid.Column="1" HorizontalAlignment="Left" Margin="0 5 0 3" VerticalAlignment="Top"
-                            Command="{Binding collapseSidebarCommand}">
+                <Button Grid.Row="0" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top"
+                        Command="{Binding collapseSidebarCommand}" Padding="8 8">
+                    <StackPanel Orientation="Horizontal">
+                        <Svg Path="/Assets/Icons/panel-left-close.svg" MinWidth="28" Height="28"
+                             VerticalAlignment="Center"
+                             Css="rect, path, circle { stroke: #ffffff; }" Opacity="1"
+                             Name="SvgSidebar" />
+                    </StackPanel>
+                </Button>
+                <StackPanel Grid.Row="1">
+                    <Button HorizontalAlignment="Left" Margin="0 5 0 3"
+                            Command="{Binding NavigateToDashboardCommand}"
+                            Name="btnDash"
+                            PointerEntered="Button_OnPointerEntered"
+                            PointerExited="Button_OnPointerExited"
+                            Click="Button_OnClick">
                         <StackPanel Orientation="Horizontal">
-                            <Svg Path="/Assets/Icons/panel-left-close.svg" Height="28"
+                            <Svg Path="/Assets/Icons/layout-dashboard.svg" MinWidth="28" Height="28"
                                  VerticalAlignment="Center"
-                                 Css="rect, path, circle { stroke: #ffffff; }" Opacity="1"
-                                 Name="SvgSidebar" />
+                                 Css="path, circle { stroke: #E22727; }" Opacity="1"
+                                 Name="SvgDash" />
+                            <TextBlock Name="txtDash" Text="Dashboard" FontSize="17.5" Margin="8 0 0 0"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#E22727">
+                                <TextBlock.Transitions>
+                                    <Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.3"
+                                                          Easing="CubicEaseInOut" />
+                                    </Transitions>
+                                </TextBlock.Transitions>
+                            </TextBlock>
                         </StackPanel>
                     </Button>
-                </Grid>
-                <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
-                    <Border Grid.Column="0" Name="borderMargin2" Background="Transparent" Width="30" Margin="0">
-                        <Border.Transitions>
+                    <Button HorizontalAlignment="Left" Margin="0 3"
+                            Command="{Binding NavigateToSettingsCommand}"
+                            Name="btnAllNotes">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/folders.svg" MinWidth="28" Height="28" VerticalAlignment="Center"
+                                 Css="path, circle { stroke: #FFFFFF; }" Opacity="1"
+                                 Name="SvgAllNotes" />
+                            <TextBlock Name="txtAllNotes" Text="All Notes" FontSize="17.5" Margin="8 0 0 0"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#FFFFFF">
+                                <TextBlock.Transitions>
+                                    <Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.3"
+                                                          Easing="CubicEaseInOut" />
+                                    </Transitions>
+                                </TextBlock.Transitions>
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Grid>
+                        <Button HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 3 0 0"
+                                Click="BtnNewNote_OnClick"
+                                Command="{Binding CreateNewNoteCommand}"
+                                Name="btnNewNote">
+                            <StackPanel Orientation="Horizontal">
+                                <Svg Path="/Assets/Icons/square-pen.svg" MinWidth="28" Height="28" VerticalAlignment="Center"
+                                     Css="path, circle { stroke: #FFFFFF; }" Opacity="1"
+                                     Name="SvgNewNote" />
+                                <TextBlock Name="txtNewNote" Text="New Note" FontSize="17.5" Margin="8 0 0 0"
+                                           FontWeight="SemiBold"
+                                           VerticalAlignment="Center" Foreground="#FFFFFF">
+                                    <TextBlock.Transitions>
+                                        <Transitions>
+                                            <DoubleTransition Property="Opacity" Duration="0:0:0.3"
+                                                              Easing="CubicEaseInOut" />
+                                        </Transitions>
+                                    </TextBlock.Transitions>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Name="btnListTabs"
+                                Click="BtnListTabs_OnClick" Padding="0">
+                            <Svg Name="SvgListTabs" Path="/Assets/Icons/chevron-down.svg"
+                                 Css="path, circle { stroke: #FFFFFF}" Height="30" Width="30" Margin="0 2 0 0" />
+                        </Button>
+                    </Grid>
+                    <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                                  HorizontalScrollBarVisibility="Disabled" Name="ScrollTabs" MaxHeight="0"
+                                  Width="195">
+                        <ScrollViewer.Transitions>
                             <Transitions>
-                                <DoubleTransition Property="Width" Duration="0:0:0.8" Delay="0"
+                                <DoubleTransition Property="MaxHeight" Duration="0:0:0.3" Delay="0"
                                                   Easing="CubicEaseInOut" />
                             </Transitions>
-                        </Border.Transitions>
-                    </Border>
-                    <StackPanel Grid.Column="1">
-                        <Button HorizontalAlignment="Left" Margin="0 5 0 3"
-                                Command="{Binding NavigateToDashboardCommand}"
-                                Name="btnDash"
-                                PointerEntered="Button_OnPointerEntered"
-                                PointerExited="Button_OnPointerExited"
-                                Click="Button_OnClick">
-                            <StackPanel Orientation="Horizontal">
-                                <Svg Path="/Assets/Icons/layout-dashboard.svg" Height="28"
-                                     VerticalAlignment="Center"
-                                     Css="path, circle { stroke: #E22727; }" Opacity="1"
-                                     Name="SvgDash" />
-                                <TextBlock Name="txtDash" Text="Dashboard" FontSize="17.5" Margin="8 0 0 0"
-                                           FontWeight="SemiBold"
-                                           VerticalAlignment="Center" Foreground="#E22727">
-                                    <TextBlock.Transitions>
-                                        <Transitions>
-                                            <DoubleTransition Property="Opacity" Duration="0:0:0.3"
-                                                              Easing="CubicEaseInOut" />
-                                        </Transitions>
-                                    </TextBlock.Transitions>
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-                        <Button HorizontalAlignment="Left" Margin="0 3"
-                                Command="{Binding NavigateToSettingsCommand}"
-                                Name="btnAllNotes">
-                            <StackPanel Orientation="Horizontal">
-                                <Svg Path="/Assets/Icons/folders.svg" Height="28" VerticalAlignment="Center"
-                                     Css="path, circle { stroke: #FFFFFF; }" Opacity="1"
-                                     Name="SvgAllNotes" />
-                                <TextBlock Name="txtAllNotes" Text="All Notes" FontSize="17.5" Margin="8 0 0 0"
-                                           FontWeight="SemiBold"
-                                           VerticalAlignment="Center" Foreground="#FFFFFF">
-                                    <TextBlock.Transitions>
-                                        <Transitions>
-                                            <DoubleTransition Property="Opacity" Duration="0:0:0.3"
-                                                              Easing="CubicEaseInOut" />
-                                        </Transitions>
-                                    </TextBlock.Transitions>
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-                        <Grid>
-                            <Button HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 3 0 0"
-                                    Click="BtnNewNote_OnClick"
-                                    Command="{Binding CreateNewNoteCommand}"
-                                    Name="btnNewNote">
-                                <StackPanel Orientation="Horizontal">
-                                    <Svg Path="/Assets/Icons/square-pen.svg" Height="28" VerticalAlignment="Center"
-                                         Css="path, circle { stroke: #FFFFFF; }" Opacity="1"
-                                         Name="SvgNewNote" />
-                                    <TextBlock Name="txtNewNote" Text="New Note" FontSize="17.5" Margin="8 0 0 0"
-                                               FontWeight="SemiBold"
-                                               VerticalAlignment="Center" Foreground="#FFFFFF">
-                                        <TextBlock.Transitions>
-                                            <Transitions>
-                                                <DoubleTransition Property="Opacity" Duration="0:0:0.3"
-                                                                  Easing="CubicEaseInOut" />
-                                            </Transitions>
-                                        </TextBlock.Transitions>
-                                    </TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <Button HorizontalAlignment="Right" VerticalAlignment="Center" Name="btnListTabs"
-                                    Click="BtnListTabs_OnClick">
-                                <Svg Name="SvgListTabs" Path="/Assets/Icons/chevron-down.svg"
-                                     Css="path, circle { stroke: #FFFFFF}" Height="30" Width="30" Margin="0 2 20 0" />
-                            </Button>
-                        </Grid>
-                        <ScrollViewer VerticalScrollBarVisibility="Disabled"
-                                      HorizontalScrollBarVisibility="Disabled" Name="ScrollTabs" MaxHeight="0"
-                                      Width="195">
-                            <ScrollViewer.Transitions>
-                                <Transitions>
-                                    <DoubleTransition Property="MaxHeight" Duration="0:0:0.3" Delay="0"
-                                                      Easing="CubicEaseInOut" />
-                                </Transitions>
-                            </ScrollViewer.Transitions>
-                            <ItemsControl ItemsSource="{Binding OpenNotes}" Margin="0 -5 0 0 ">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Spacing="3" Name="stackTabs" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="vm:NoteEditorViewModel">
-                                        <Grid ColumnDefinitions="166,Auto">
-                                            <Button Grid.Column="0"
-                                                    Command="{Binding Path=DataContext.SwitchToNoteCommand, ElementName=rootWindow}"
-                                                    CommandParameter="{Binding .}" Foreground="White"
-                                                    Margin="55 0 0 0">
-                                                <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
-                                                    <TextBlock Grid.Column="0" Text="{Binding Title}"
-                                                               TextWrapping="NoWrap"
-                                                               TextTrimming="CharacterEllipsis" Margin="0 0 2 0"
-                                                               FontSize="15" />
-                                                    <TextBlock Grid.Column="1" Text="*" FontWeight="Bold"
-                                                               IsVisible="{Binding IsDirty}" FontSize="15" />
-                                                </Grid>
-                                            </Button>
-                                            <Button Grid.Column="1" HorizontalAlignment="Left" Height="24"
-                                                    Width="24"
-                                                    Padding="2"
-                                                    Command="{Binding DataContext.CloseNoteCommand , ElementName=rootWindow}"
-                                                    CommandParameter="{Binding .}">
-                                                <Svg Height="20" Path="/Assets/Icons/x.svg"
-                                                     Css="path, circle { stroke: #FFFFFF; }">
-                                                </Svg>
-                                            </Button>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-                        <Button HorizontalAlignment="Left" Margin="0 3"
-                                Command="{Binding NavigateToSettingsCommand}"
-                                Name="btnTrash">
-                            <StackPanel Orientation="Horizontal">
-                                <Svg Path="/Assets/Icons/trash-2.svg" Height="28" VerticalAlignment="Center"
-                                     Css="path, circle { stroke: #FFFFFF; }" Opacity="1"
-                                     Name="SvgTrash" />
-                                <TextBlock Name="txtTrash" Text="Trash" FontSize="17.5" Margin="8 0 0 0"
-                                           FontWeight="SemiBold"
-                                           VerticalAlignment="Center" Foreground="#FFFFFF">
-                                    <TextBlock.Transitions>
-                                        <Transitions>
-                                            <DoubleTransition Property="Opacity" Duration="0:0:0.3"
-                                                              Easing="CubicEaseInOut" />
-                                        </Transitions>
-                                    </TextBlock.Transitions>
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-                        <Button HorizontalAlignment="Left" Margin="0 3"
-                                Command="{Binding NavigateToSettingsCommand}"
-                                Name="btnSettings"
-                                PointerEntered="Button_OnPointerEntered"
-                                PointerExited="Button_OnPointerExited"
-                                Click="Button_OnClick">
-                            <StackPanel Orientation="Horizontal">
-                                <Svg Path="/Assets/Icons/settings.svg" Height="28" VerticalAlignment="Center"
-                                     Css="path, circle { stroke: #FFFFFF; }" Opacity="1"
-                                     Name="SvgSettings" />
-                                <TextBlock Name="txtSettings" Text="Settings" FontSize="17.5" Margin="8 0 0 0"
-                                           FontWeight="SemiBold"
-                                           VerticalAlignment="Center" Foreground="#FFFFFF">
-                                    <TextBlock.Transitions>
-                                        <Transitions>
-                                            <DoubleTransition Property="Opacity" Duration="0:0:0.3"
-                                                              Easing="CubicEaseInOut" />
-                                        </Transitions>
-                                    </TextBlock.Transitions>
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </Grid>
+                        </ScrollViewer.Transitions>
+                        <ItemsControl ItemsSource="{Binding OpenNotes}" Margin="0 -5 0 0 ">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="3" Name="stackTabs" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:NoteEditorViewModel">
+                                    <Grid ColumnDefinitions="166,Auto">
+                                        <Button Grid.Column="0"
+                                                Command="{Binding Path=DataContext.SwitchToNoteCommand, ElementName=rootWindow}"
+                                                CommandParameter="{Binding .}" Foreground="White"
+                                                Margin="55 0 0 0">
+                                            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                                                <TextBlock Grid.Column="0" Text="{Binding Title}"
+                                                           TextWrapping="NoWrap"
+                                                           TextTrimming="CharacterEllipsis" Margin="0 0 2 0"
+                                                           FontSize="15" />
+                                                <TextBlock Grid.Column="1" Text="*" FontWeight="Bold"
+                                                           IsVisible="{Binding IsDirty}" FontSize="15" />
+                                            </Grid>
+                                        </Button>
+                                        <Button Grid.Column="1" HorizontalAlignment="Left" Height="24"
+                                                Width="24"
+                                                Padding="2"
+                                                Command="{Binding DataContext.CloseNoteCommand , ElementName=rootWindow}"
+                                                CommandParameter="{Binding .}">
+                                            <Svg Height="20" Path="/Assets/Icons/x.svg"
+                                                 Css="path, circle { stroke: #FFFFFF; }">
+                                            </Svg>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Button HorizontalAlignment="Left" Margin="0 3"
+                            Command="{Binding NavigateToSettingsCommand}"
+                            Name="btnTrash">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/trash-2.svg" MinWidth="28" Height="28" VerticalAlignment="Center"
+                                 Css="path, circle { stroke: #FFFFFF; }" Opacity="1"
+                                 Name="SvgTrash" />
+                            <TextBlock Name="txtTrash" Text="Trash" FontSize="17.5" Margin="8 0 0 0"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#FFFFFF">
+                                <TextBlock.Transitions>
+                                    <Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.3"
+                                                          Easing="CubicEaseInOut" />
+                                    </Transitions>
+                                </TextBlock.Transitions>
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button HorizontalAlignment="Left" Margin="0 3"
+                            Command="{Binding NavigateToSettingsCommand}"
+                            Name="btnSettings"
+                            PointerEntered="Button_OnPointerEntered"
+                            PointerExited="Button_OnPointerExited"
+                            Click="Button_OnClick">
+                        <StackPanel Orientation="Horizontal">
+                            <Svg Path="/Assets/Icons/settings.svg" MinWidth="28" Height="28" VerticalAlignment="Center"
+                                 Css="path, circle { stroke: #FFFFFF; }" Opacity="1"
+                                 Name="SvgSettings" />
+                            <TextBlock Name="txtSettings" Text="Settings" FontSize="17.5" Margin="8 0 0 0"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#FFFFFF">
+                                <TextBlock.Transitions>
+                                    <Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.3"
+                                                          Easing="CubicEaseInOut" />
+                                    </Transitions>
+                                </TextBlock.Transitions>
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Border>
         <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" Name="ContentControl" />

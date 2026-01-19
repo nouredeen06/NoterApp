@@ -11,8 +11,7 @@ namespace NoterApp.Services;
 
 public class DataService
 {
-    private static readonly Lazy<DataService> _instance = new(() => new DataService());
-    public static DataService Instance => _instance.Value;
+    public static DataService Instance { get; } = new();
 
     private readonly string _notesDirectory;
     private readonly string _indexFilePath;
@@ -127,7 +126,8 @@ public class DataService
             ID = manifest.ID,
             Title = manifest.Title,
             BodySnippet = newContent.Substring(0, SnippetLength),
-            DateModified = manifest.Versions.Last().TimeStamp
+            DateModified = manifest.Versions.Last().TimeStamp,
+            Tags = manifest.Tags
         };
         await SaveIndexAsync();
     }
@@ -198,6 +198,4 @@ public class DataService
     }
 
     public List<ColorInfo> GetColors() => _colors;
-
-   
 }

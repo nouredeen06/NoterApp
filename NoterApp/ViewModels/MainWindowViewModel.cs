@@ -19,7 +19,6 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private DashboardViewModel _dashboardViewModel { get; }
     private SettingsViewModel _settingsViewModel { get; }
-    private TagEditorViewModel _tagEditorViewModel { get; }
 
 
     [ObservableProperty] private ObservableCollection<NoteEditorViewModel> _openNotes;
@@ -34,7 +33,6 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel()
     {
         _dashboardViewModel = new DashboardViewModel();
-        _tagEditorViewModel = new TagEditorViewModel();
         _dashboardViewModel.Shell = this;
 
         _openNotes = new ObservableCollection<NoteEditorViewModel>();
